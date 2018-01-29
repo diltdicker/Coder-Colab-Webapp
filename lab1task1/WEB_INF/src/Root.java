@@ -19,11 +19,12 @@ public class Root extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		String fName;
-		String lName;
+		String fName = "";
+		String lName = "";
+		String jsonStr;
 		Cookie[] cookies = req.getCookies();
 
-		if (cookies.length == 0) {
+		if (cookies == null || cookies.length == 0) {
 			// do nothing
 		} else {
 			int i = 0;
@@ -36,12 +37,14 @@ public class Root extends HttpServlet {
 			}
 			if (flag) {
 				// parse cookie values
+				jsonStr = cookies[i].getValue().replaceAll("--",",");
+				jsonStr = jsonStr.replaceAll("!!","\"");
+				JSONObject jsonObj = (JSONObject) JSONSerializer.toJSON( jsonStr );
+				fName = jsonObj.getString("first");
+				lName = jsonObj.getString("last");
+
 			}
 		}
-		String test = "{\"test\":\"Help ME!\"}";
-		JSONObject jsonObj = (JSONObject) JSONSerializer.toJSON(test);
-		DynaBean bean = (DynaBean) JSONSerializer.toJava(jsonObj);
-		String value = (String) bean.get("test");
 		//
 		/*
 		<!DOCTYPE>
@@ -69,11 +72,15 @@ public class Root extends HttpServlet {
 		out.println("<body>");
 		out.println("<form action=\"/task1/newperson\" method=\"post\"");
 		out.println("<p>Welcom to Task 1: now hand over your personal information</p>");
-		out.println("First Name: <input type=\"text\" name=\"firstN\"><br>");
-		out.println("Last Name: <input type=\"text\" name=\"lastN\"><br>");
+		out.println("First Name: <input type=\"text\" name=\"firstN\" value=\"" + fName + "\"><br>");
+		out.println("Last Name: <input type=\"text\" name=\"lastN\" value=\"" + lName + "\"><br>");
 		out.println("<input type=\"submit\" value=\"Submit\">");
 		out.println("</form>");
-		out.println("<h1>"+ value +"</h1>");
+		if (cookies == null){
+			out.println("test");
+		}
+		out.println("testing");
+		//out.println("<h1><br>"+  +"<br></h1>");
 		out.println("</body>");
 		out.println("<footer>Copyright Dillon Dickerson 2018</footer>");
 		out.println("</html>");

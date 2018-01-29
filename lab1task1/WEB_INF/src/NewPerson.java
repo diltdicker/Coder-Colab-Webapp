@@ -17,18 +17,28 @@ import net.sf.json.xml.XMLSerializer;
 public class NewPerson extends HttpServlet {
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String fName = req.getParameter("FirstN");
-		String lName = req.getParameter("LastN");
+		String fName = req.getParameter("firstN");
+		String lName = req.getParameter("lastN");
 		Cookie[] cookies = req.getCookies();
+		String val = "test";
 		//
 		if (fName != null && lName != null && !fName.equals("") && ! lName.equals("")) {
 			// create cookie here
 			Cookie cookieUsr;
-			if (cookies.length == 0) {
-				cookieUsr = new Cookie("lab1cookie_PreviousVisit", "{\"first\":\"" + fName + "\", \"last\":\"" + lName + "\"}");
+			if (cookies == null || cookies.length == 0) {
+				JSONObject jsonObj = new JSONObject().element("first", fName).element("last", lName);
+				val = jsonObj.toString();
+				val = val.replaceAll(",","--");
+				val = val.replaceAll("\"","!!");
+				cookieUsr = new Cookie("lab1cookie_PreviousVisit", val);
+
 			} else {
 				int i = 0;
 				boolean flag = false;
+				JSONObject jsonObj = new JSONObject().element("first", fName).element("last", lName);
+				val = jsonObj.toString();
+				val = val.replaceAll(",","--");
+				val = val.replaceAll("\"","!!");
 				for (; i < cookies.length; i++) {
 					if (cookies[i].getName().equals("lab1cookie_PreviousVisit")){
 						flag = true;
@@ -37,9 +47,9 @@ public class NewPerson extends HttpServlet {
 				}
 				if (flag) {
 					cookieUsr = cookies[i];
-					cookieUsr.setValue("{\"first\":\"" + fName + "\", \"last\":\"" + lName + "\"}");
+					cookieUsr.setValue(val);
 				} else {
-					cookieUsr = new Cookie("lab1cookie_PreviousVisit", "{\"first\":\"" + fName + "\", \"last\":\"" + lName + "\"}");
+					cookieUsr = new Cookie("lab1cookie_PreviousVisit", val);
 				}
 			}
 			resp.addCookie(cookieUsr);
@@ -48,6 +58,7 @@ public class NewPerson extends HttpServlet {
 		out.println("<html>");
 		out.println(fName);
 		out.println(lName);
+		out.println(val);
 		out.println("</html>");
 	}
 
