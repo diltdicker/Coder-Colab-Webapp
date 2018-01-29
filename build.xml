@@ -20,7 +20,7 @@
 		<javac includeantruntime="false" srcdir="${src.one}" destdir="${dest.one}">
 			<classpath>
         		<fileset dir="${lib.one}" includes="*.jar"/>
-        		<fileset dir="${extern.lib}" includes="servlet-api.jar"/>
+        		<fileset dir="${extern.lib}" includes="*.jar"/>
         		<pathelement path="${dest.one}" />
 			</classpath>
 		</javac>
@@ -64,6 +64,11 @@
 		<delete file="task2.war"/>
 	</target>
 	<target name="test">
-		<touch file="${lib.one}/ant_test.txt"/>
+		<java classname="Test">
+			<classpath>
+				<fileset dir="${lib.one}" includes="*.jar"/>
+				<pathelement path="${dest.one}"/>
+			</classpath>
+		</java>
 	</target>
 </project>
