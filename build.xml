@@ -16,6 +16,7 @@
 	</target>
 	<target name="build-task1">
 		<mkdir dir="${dest.one}"/>
+		<mkdir dir="${lib.one}"/>
 		<javac includeantruntime="false" srcdir="${src.one}" destdir="${dest.one}">
 			<classpath>
         		<fileset dir="${lib.one}" includes="*.jar"/>
@@ -54,11 +55,13 @@
 		<delete includeEmptyDirs="true">
 			<fileset dir="${dest.one}"/>
 		</delete>
+		<delete file="task1.war"/>
 	</target>
 	<target name="clean-task2">
 		<delete includeEmptyDirs="true">
 			<fileset dir="${dest.two}"/>
 		</delete>
+		<delete file="task2.war"/>
 	</target>
 	<target name="test">
 		<touch file="${lib.one}/ant_test.txt"/>

@@ -9,7 +9,7 @@ import java.util.*;
 	Copyright Dillon Dickerson 2018
 */
 
-public class NewPerson extends HttpServlet {
+public class Root extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//
@@ -33,15 +33,15 @@ public class NewPerson extends HttpServlet {
 		*/
 		//
 		PrintWriter out = resp.getWriter();
-		out.println("!DOCTYPE");
 		out.println("<html>");
 		out.println("<body>");
-		out.println("<form action=\"task1/newperson\" method=\"post\"");
+		out.println("<form action=\"/task1/newperson\" method=\"post\"");
 		out.println("<p>Welcom to Task 1: now hand over your personal information</p>");
 		out.println("First Name: <input type=\"text\" name=\"firstN\"><br>");
 		out.println("Last Name: <input type=\"text\" name=\"LastN\"><br>");
 		out.println("<input type=\"submit\" value=\"Submit\">");
 		out.println("</form>");
+		out.println("<h1>testing</h1>");
 		out.println("</body>");
 		out.println("<footer>Copyright Dillon Dickerson 2018</footer>");
 		out.println("</html>");
