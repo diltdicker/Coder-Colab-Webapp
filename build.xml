@@ -30,7 +30,7 @@
 		<javac includeantruntime="false" srcdir="${src.two}" destdir="${dest.two}">
 			<classpath>
                 <fileset dir="${lib.two}" includes="*.jar"/>
-                <fileset dir="${extern.lib}" includes="servlet-api.jar"/>
+                <fileset dir="${extern.lib}" includes="*.jar"/>
                 <pathelement path="${dest.two}"/>
             </classpath>
         </javac>
@@ -49,7 +49,19 @@
 			<fileset dir="temp"/>
 		</delete>
 	</target>
-	<target name="war-task2">
+	<target name="war-task2" depends="build-task2">
+		<mkdir dir="temp"/>
+        <copydir dest="temp" src="${task2}"/>
+        <war basedir="temp" destfile="task2.war" webxml="task2.xml">
+            <exclude name="WEB_INF/**"/>
+            <webinf dir="temp/WEB_INF/">
+                <include name="**/*.jar" />
+                <include name="classes/**"/>
+            </webinf>
+        </war>
+        <delete includeEmptyDirs="true">
+            <fileset dir="temp"/>
+        </delete>
 	</target>
 	<target name="clean-task1">
 		<delete includeEmptyDirs="true">

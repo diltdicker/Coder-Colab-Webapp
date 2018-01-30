@@ -23,12 +23,10 @@ public class NewPerson extends HttpServlet {
 		String[] days = req.getParameterValues("days");
 		String[] os = req.getParameterValues("os");
 		Cookie[] cookies = req.getCookies();
-		JSONObject root = new JSONObject();
 		String val = "test";
 		//
 		if (fName != null && lName != null && !fName.equals("") && ! lName.equals("")) {
 			// create cookie here
-			root = new JSONObject();
 			Cookie cookieUsr;
 			if (cookies == null || cookies.length == 0) {
 				JSONArray langJson = (JSONArray) JSONSerializer.toJSON(langs);
@@ -39,7 +37,7 @@ public class NewPerson extends HttpServlet {
 				val = val.replaceAll(",","--");
 				val = val.replaceAll("\"","!!");
 				cookieUsr = new Cookie("lab1cookie_PreviousVisit", val);
-				root = jsonObj;
+
 			} else {
 				int i = 0;
 				boolean flag = false;
@@ -62,7 +60,6 @@ public class NewPerson extends HttpServlet {
 				} else {
 					cookieUsr = new Cookie("lab1cookie_PreviousVisit", val);
 				}
-				root = jsonObj;
 			}
 			resp.addCookie(cookieUsr);
 		}
@@ -75,11 +72,6 @@ public class NewPerson extends HttpServlet {
 		out.println(os.toString());
 		out.println(val);
 		out.println("</html>");
-
-		FileManager fm = new FileManager();
-		fm.setRoot(root);
-		fm.writeFile();
-
 	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

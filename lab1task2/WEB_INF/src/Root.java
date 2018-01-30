@@ -76,6 +76,7 @@ public class Root extends HttpServlet {
 
 		PrintWriter out = resp.getWriter();
 		out.println("<html>");
+		out.println(req.getQueryString());
 		if (flag) {
 			out.println("<h3>Welcome back</h3>");
 		}
