@@ -9,7 +9,7 @@ import net.sf.json.xml.XMLSerializer;
 
 public class FileManager {
 
-    String fileName = "coderbook.xml";//"../webapps/task1/coderbook.xml";
+    String fileName = "../webapps/task1/lab1.xml";//"coderbook.xml";//
     JSONObject root;
     JSONArray list;
 
@@ -17,6 +17,10 @@ public class FileManager {
 
     }
 
+    private void initFM() {
+        list = new JSONArray();
+        root = new JSONObject().element("list", list);
+    }
     /*
         might return void
     */
@@ -41,6 +45,13 @@ public class FileManager {
             e.printStackTrace();
         }
         System.out.println("after file");
+        if (fileValue.size() == 0) {
+            initFM();
+            fileValue = root;
+        } else {
+            root = fileValue;
+            list = fileValue.getJSONArray("list");
+        }
         return fileValue;
     }
 
@@ -58,7 +69,42 @@ public class FileManager {
 
     }
 
+    public JSONArray getList() {
+        return this.list;
+    }
+
+    public void setList(JSONArray list) {
+        this.list = list;
+    }
+
     public void setRoot(JSONObject root) {
         this.root = root;
+    }
+
+    public JSONObject getRoot() {
+        return this.root;
+    }
+
+    public void addUser(JSONObject usr) {
+        // needed for convience
+        int loc = isUser(usr);
+        if (loc != -1) {
+            list.remove(loc);
+        }
+        list.add(usr);
+        root = new JSONObject().element("list", list);
+    }
+
+    public int isUser(JSONObject usr) {
+        int flag = -1;
+        String first = usr.getString("first");
+        String last = usr.getString("last");
+        for (int i = 0; i < list.size(); i++) {
+            if (first.equals(list.getJSONObject(i).getString("first")) && last.equals(list.getJSONObject(i).getString("last"))) {
+                flag = i;
+                break;
+            }
+        }
+        return flag;
     }
 }

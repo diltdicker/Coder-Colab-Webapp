@@ -25,6 +25,7 @@ public class NewPerson extends HttpServlet {
 		Cookie[] cookies = req.getCookies();
 		JSONObject root = new JSONObject();
 		String val = "test";
+		boolean set = false;
 		//
 		if (fName != null && lName != null && !fName.equals("") && ! lName.equals("")) {
 			// create cookie here
@@ -65,20 +66,29 @@ public class NewPerson extends HttpServlet {
 				root = jsonObj;
 			}
 			resp.addCookie(cookieUsr);
+			FileManager fm = new FileManager();
+			fm.readFile();
+			fm.addUser(root);
+			fm.writeFile();
+			set = true;
 		}
 		PrintWriter out = resp.getWriter();
 		out.println("<html>");
-		out.println(fName);
-		out.println(lName);
-		out.println(langs.toString());
-		out.println(days.toString());
-		out.println(os.toString());
-		out.println(val);
-		out.println("</html>");
+		out.println("<body>");
 
-		FileManager fm = new FileManager();
-		fm.setRoot(root);
-		fm.writeFile();
+		if (set) {
+			out.println("<p>Excellent the cookie has been set and the value has been added to the xml file</p>");
+			out.println("<br>first: " + fName);
+			out.println("<br>last: " + lName);
+			out.println("<br>langs: " + root.getJSONArray("langs").toString());
+			out.println("<br>days: " + root.getJSONArray("days").toString());
+			out.println("<br>os: " + root.getJSONArray("os").toString());
+		} else {
+			out.println("there was a problem with the input");
+		}
+		out.println("<br><a href=\"/task1/\">Link back to home</a>");
+		out.println("</body>");
+		out.println("</html>");
 
 	}
 
@@ -86,6 +96,7 @@ public class NewPerson extends HttpServlet {
 		//
 		PrintWriter out = resp.getWriter();
 		resp.setContentType("text/html");
+		resp.setStatus(405);
 		out.println("<html>");
 		out.println("Um, why are you here?");
 		out.println("Get back to where you belong");
